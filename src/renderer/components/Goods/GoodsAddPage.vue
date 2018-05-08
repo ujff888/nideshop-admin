@@ -27,7 +27,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="商品简介" prop="simple_desc">
-            <el-input type="textarea" v-model="infoForm.simple_desc" :rows="3"></el-input>
+            <el-input type="textarea" v-model="infoForm.goods_desc" :rows="3"></el-input>
             <div class="form-tip"></div>
           </el-form-item>
           <el-form-item label="商品图片" prop="list_pic_url">
@@ -39,7 +39,7 @@
             </el-upload>
             <div class="form-tip">图片尺寸：750*420</div>
           </el-form-item>
-          <el-form-item label="规格/库存" prop="simple_desc">
+          <el-form-item label="规格/库存" >
 
           </el-form-item>
           <el-form-item label="推荐类型">
@@ -106,7 +106,7 @@
       onSubmitInfo() {
         this.$refs['infoForm'].validate((valid) => {
           if (valid) {
-            this.axios.post('brand/store', this.infoForm).then((response) => {
+            this.axios.post('goods/store', this.infoForm).then((response) => {
               if (response.data.errno === 0) {
                 this.$message({
                   type: 'success',
@@ -129,10 +129,10 @@
         if (res.errno === 0) {
           switch (res.data.name) {
             //商品图片
-            case 'brand_pic':
+            case 'goods_pic':
               this.$set('infoForm.list_pic_url', res.data.fileUrl);
               break;
-            case 'brand_new_pic':
+            case 'goods_new_pic':
               this.$set('infoForm.new_pic_url', res.data.fileUrl);
               break;
           }
@@ -145,12 +145,12 @@
 
         //加载商品详情
         let that = this
-        this.axios.get('brand/info', {
+        this.axios.get('goods/info', {
           params: {
             id: that.infoForm.id
           }
         }).then((response) => {
-          let resInfo = response.data.data;
+          let resInfo = response.data.data; console.log(resInfo)
           resInfo.is_new = resInfo.is_new ? true : false;
           resInfo.is_show = resInfo.is_show ? true : false;
           that.infoForm = resInfo;
